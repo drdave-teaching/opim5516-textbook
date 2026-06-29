@@ -2,9 +2,15 @@
 
 This is the architecture that ate machine learning. The same core idea — **attention** — now powers the models that write text, generate images, and forecast the weather. Rather than present it as magic, we earn it: we motivate the transformer against the LSTM you already know, open the hood on how data flows through it and how many parameters it actually has, and then apply it to four kinds of data in turn.
 
-```{admonition} Read this module with a pencil
+```{admonition} See the math — a "counted" notebook for every method
 :class: important
-The recurring theme here is **how data is transformed through the network** and **how to count trainable parameters**. For each architecture, trace the tensor shapes — embedding → query/key/value → attention → feed-forward → output — and tally the parameters by hand. If you can do that, you understand the model; if you can't, you're just calling `.fit()` and hoping. (This part of the book is actively being expanded with worked shape-traces — a work in progress.)
+The recurring theme here is **how data is transformed through the network** and **where every trainable parameter lives, and why**. For each architecture there's a pure-numpy companion notebook that builds the model by hand, prints a table of *every weight and bias with a one-line reason it exists*, and traces the tensor shapes from input to output:
+
+- **`Transformer_Params_and_ShapeFlow.ipynb`** — Q/K/V/O, LayerNorms, FFN, embeddings; the closed-form count $4(d^2+d)+4d+(2dd_{ff}+d_{ff}+d)$ per block — and it scales to confirm **GPT-2 small = 124M**.
+- **`LSTM_Params_and_ShapeFlow.ipynb`** — the four gates; $4H(i+H+1)$, exactly Keras's number.
+- **`ViT_Params_and_ShapeFlow.ipynb`** — how an *image becomes tokens* (patch embedding), then the same block as text.
+
+If you can read those tables and predict a `model.summary()`, you understand the model; if you can't, you're just calling `.fit()` and hoping.
 ```
 
 ## 3.1 — Time series: LSTM vs. Transformer
