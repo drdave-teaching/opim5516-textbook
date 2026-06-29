@@ -1,0 +1,6 @@
+format: jb-book
+root: intro
+chapters:
+  - file: m1_bayesian/index
+  - file: m2_graphs/index
+  - file: m3_transformers/index

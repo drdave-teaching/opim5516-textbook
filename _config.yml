@@ -1,0 +1,26 @@
+title: "Advanced Deep Learning"
+author: "Dr. Dave Wanik · University of Connecticut (OPIM 5516)"
+only_build_toc_files: true
+execute:
+  execute_notebooks: "off"
+html:
+  use_repository_button: true
+  home_page_in_navbar: true
+  extra_footer: |
+    <p style="font-size:0.9em;opacity:0.85"><strong>⚠️ Work in progress.</strong> These are living draft materials — actively being written and revised. Expect rough edges, gaps, and changes; this is a teaching companion, not a final or official reference.</p>
+    <p><em>OPIM 5516 — Advanced Deep Learning. Built from Dr. Wanik's lecture transcripts and course notebooks: Bayesian(ish) NNs, Graph Neural Networks, and Transformers.</em></p>
+repository:
+  url: https://github.com/drdave-teaching/opim5516-textbook
+  branch: main
+parse:
+  myst_enable_extensions:
+    - amsmath
+    - dollarmath
+    - colon_fence
+    - deflist
+sphinx:
+  config:
+    html_show_copyright: false
+    mathjax3_config:
+      tex:
+        inlineMath: [['$', '$']]
