@@ -4,11 +4,15 @@ This is the architecture that ate machine learning. The same core idea — **att
 
 ```{admonition} See the math — a "counted" notebook for every method
 :class: important
-The recurring theme here is **how data is transformed through the network** and **where every trainable parameter lives, and why**. For each architecture there's a pure-numpy companion notebook that builds the model by hand, prints a table of *every weight and bias with a one-line reason it exists*, and traces the tensor shapes from input to output:
+The recurring theme here is **how data is transformed through the network** and **where every trainable parameter lives, and why**. There's a pure-numpy "counted" companion notebook for **every data modality** — each builds the model by hand, prints a table of *every weight and bias with a one-line reason it exists*, and traces the tensor shapes from input to output. The punchline across all of them: **it's the same transformer block every time — only how the input becomes tokens (and how tokens become the answer) changes.**
 
-- **`Transformer_Params_and_ShapeFlow.ipynb`** — Q/K/V/O, LayerNorms, FFN, embeddings; the closed-form count $4(d^2+d)+4d+(2dd_{ff}+d_{ff}+d)$ per block — and it scales to confirm **GPT-2 small = 124M**.
-- **`LSTM_Params_and_ShapeFlow.ipynb`** — the four gates; $4H(i+H+1)$, exactly Keras's number.
-- **`ViT_Params_and_ShapeFlow.ipynb`** — how an *image becomes tokens* (patch embedding), then the same block as text.
+| Modality | Notebook | The trick at the ends |
+|---|---|---|
+| **(recurrent baseline)** | `LSTM_Params_and_ShapeFlow` | four gates; $4H(i{+}H{+}1)$, exactly Keras's number |
+| **Time series** | `TimeSeries_Transformer_Params_and_ShapeFlow` | input embedding is a `Linear(F→d)`, not a token lookup; head forecasts the next value |
+| **Text / GPT** | `Transformer_Params_and_ShapeFlow` | token-ID lookup + a (free) causal mask; scales to confirm **GPT-2 small = 124M** |
+| **Images** | `ViT_Params_and_ShapeFlow` | an *image becomes patches → tokens* |
+| **Video** | `VideoTransformer_Params_and_ShapeFlow` | frames become *space-time tokens*; a pixel decoder draws the next frame |
 
 If you can read those tables and predict a `model.summary()`, you understand the model; if you can't, you're just calling `.fit()` and hoping.
 ```
