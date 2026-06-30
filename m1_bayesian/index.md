@@ -1,6 +1,6 @@
 # Module 1 — Bayesian(ish) Neural Networks
 
-A standard neural network is a confident liar. Ask it for the price of a house and it returns a single number — `$420,000` — with exactly the same swagger whether the house is a textbook three-bedroom colonial or a one-of-a-kind oddity it has never seen anything like. In this module we fix that. We build networks that return a **prediction and a measure of how much to trust it**, and we learn to read which features drive both the prediction and the doubt.
+A standard neural network is a confident liar. Ask it for the price of a house and it returns a single number — **\$420,000** — with exactly the same swagger whether the house is a textbook three-bedroom colonial or a one-of-a-kind oddity it has never seen anything like. In this module we fix that. We build networks that return a **prediction and a measure of how much to trust it**, and we learn to read which features drive both the prediction and the doubt.
 
 This is also where the course's two recurring tools first appear: the **Keras Functional API** (because the models here have more than one output, so the simple `Sequential` stack won't do) and **SHAP** (because once a model is making consequential decisions, "trust me" is not an acceptable explanation).
 

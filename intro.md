@@ -20,7 +20,7 @@ The book follows the three modules of the course:
 ```{tableofcontents}
 ```
 
-- **Module 1 — Bayesian(ish) Neural Networks.** A model that says "$420{,}000$" is less useful than one that says "$420{,}000 \pm 30{,}000$, and I'm *unusually* unsure about this one." We build that: the Functional API, SHAP for explainability, **MC Dropout** for *epistemic* (model) uncertainty, and a two-headed network for *aleatoric* (data) uncertainty — then check our intervals with coverage.
+- **Module 1 — Bayesian(ish) Neural Networks.** A model that says "**\$420,000**" is less useful than one that says "**\$420,000 ± \$30,000**, and I'm *unusually* unsure about this one." We build that: the Functional API, SHAP for explainability, **MC Dropout** for *epistemic* (model) uncertainty, and a two-headed network for *aleatoric* (data) uncertainty — then check our intervals with coverage.
 - **Module 2 — Graph Neural Networks.** Most interesting data isn't a flat table; it's a graph. We start with collaborative filtering and recommender systems (the gentle on-ramp), learn how **message passing and smoothing** turn a graph into features, and build **GCNs and GraphSAGE** in PyTorch.
 - **Module 3 — Transformers.** The architecture that ate machine learning. We motivate it against the LSTM on time series, open the hood on **attention** and **parameter counting**, then apply transformers to text (a from-scratch GPT), images (the **Vision Transformer**), and video (spatiotemporal weather and energy forecasting).
 
