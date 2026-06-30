@@ -1,0 +1,520 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Module 1 — Bayesian(ish) Neural Networks &#8212; Advanced Deep Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"]]}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'm1_bayesian/index';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Module 2 — Graph Neural Networks" href="../m2_graphs/index.html" />
+    <link rel="prev" title="Preface" href="../intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Advanced Deep Learning</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Preface
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Module 1 — Bayesian(ish) Neural Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../m2_graphs/index.html">Module 2 — Graph Neural Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../m3_transformers/index.html">Module 3 — Transformers</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/drdave-teaching/opim5516-textbook" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/m1_bayesian/index.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Module 1 — Bayesian(ish) Neural Networks</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#webscraping-and-gcp-the-data-behind-the-project">1.0 — Webscraping and GCP (the data behind the project)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-dnns-with-shap">1.1 — Simple DNNs with SHAP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#epistemic-uncertainty-with-mc-dropout">1.2 — Epistemic uncertainty with MC Dropout</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-aleatoric-uncertainty-two-heads-baby">1.3 — Adding aleatoric uncertainty (“two heads, baby”)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-1-probabilistic-car-prices">Project 1 — Probabilistic car prices</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="module-1-bayesian-ish-neural-networks">
+<h1>Module 1 — Bayesian(ish) Neural Networks<a class="headerlink" href="#module-1-bayesian-ish-neural-networks" title="Link to this heading">#</a></h1>
+<p>A standard neural network is a confident liar. Ask it for the price of a house and it returns a single number — <strong>$420,000</strong> — with exactly the same swagger whether the house is a textbook three-bedroom colonial or a one-of-a-kind oddity it has never seen anything like. In this module we fix that. We build networks that return a <strong>prediction and a measure of how much to trust it</strong>, and we learn to read which features drive both the prediction and the doubt.</p>
+<p>This is also where the course’s two recurring tools first appear: the <strong>Keras Functional API</strong> (because the models here have more than one output, so the simple <code class="docutils literal notranslate"><span class="pre">Sequential</span></code> stack won’t do) and <strong>SHAP</strong> (because once a model is making consequential decisions, “trust me” is not an acceptable explanation).</p>
+<section id="webscraping-and-gcp-the-data-behind-the-project">
+<h2>1.0 — Webscraping and GCP (the data behind the project)<a class="headerlink" href="#webscraping-and-gcp-the-data-behind-the-project" title="Link to this heading">#</a></h2>
+<p>The module’s project predicts used-car prices, and the data comes from <em>you</em>: a Craigslist scraper deployed on Google Cloud Platform via GitHub Actions, with a GenAI ETL step that turns messy listing text into clean structured rows. This is reused from OPIM 5512 — implement the scraper, let it run on a schedule, and you’ll have a live, growing dataset of prices to model. We don’t re-teach the deployment here; we use its output.</p>
+</section>
+<section id="simple-dnns-with-shap">
+<h2>1.1 — Simple DNNs with SHAP<a class="headerlink" href="#simple-dnns-with-shap" title="Link to this heading">#</a></h2>
+<p>We “walk before we run.” Start with an ordinary dense network for regression, but build it with the <strong>Functional API</strong> so that adding a second output head later is a one-line change rather than a rewrite.</p>
+<p>Then we explain it. <strong>SHAP</strong> (SHapley Additive exPlanations) assigns each feature a value quantifying its contribution to a particular prediction, grounded in cooperative game theory. The three plots you’ll live in:</p>
+<ul class="simple">
+<li><p>the <strong>beeswarm</strong>, a global summary of which features matter and in which direction;</p></li>
+<li><p>the <strong>dependence plot</strong>, showing how one feature’s effect changes across its range (and how it interacts with another);</p></li>
+<li><p>the <strong>waterfall</strong>, which decomposes a <em>single</em> prediction into “this feature pushed the price up by $X, that one pushed it down by $Y.”</p></li>
+</ul>
+<div class="tip admonition">
+<p class="admonition-title">The mental model</p>
+<p>A dense net learns <em>what</em> to predict. SHAP tells you <em>why</em> it predicted that, one decision at a time. You will not deploy a model in this course that you cannot explain.</p>
+</div>
+</section>
+<section id="epistemic-uncertainty-with-mc-dropout">
+<h2>1.2 — Epistemic uncertainty with MC Dropout<a class="headerlink" href="#epistemic-uncertainty-with-mc-dropout" title="Link to this heading">#</a></h2>
+<p>Here is the first beautiful trick. Dropout is normally a <em>training-time</em> regularizer — randomly zero out neurons so the network can’t over-rely on any one path. <strong>Monte Carlo Dropout</strong> leaves dropout <em>on at inference time</em> and runs the same input through the network many times (we use 100 passes). Each pass takes a slightly different random sub-network, so you get a <em>distribution</em> of predictions instead of one number.</p>
+<p>The <strong>mean</strong> of those passes is your prediction. The <strong>variance</strong> is your <strong>epistemic uncertainty</strong> — the model’s uncertainty about its own knowledge, high exactly where it has seen little similar data. In Keras, the key is calling the dropout layer with <code class="docutils literal notranslate"><span class="pre">training=True</span></code> during prediction.</p>
+<p>We then check ourselves with <strong>coverage</strong>. For each test point, is the true value within <span class="math notranslate nohighlight">\(\pm 1.96\)</span> standard deviations of our predicted mean? If our uncertainty is honest, that should happen about <strong>95%</strong> of the time. (Don’t trust the bell curve? Use empirical percentiles instead — same logic, no Gaussian assumption.) When you plot coverage against the target, you’ll often find it’s excellent in the bulk of the data and <strong>falls apart in the tails</strong> — for us, the expensive houses — which is precisely the signal that you need more features or more data out there.</p>
+</section>
+<section id="adding-aleatoric-uncertainty-two-heads-baby">
+<h2>1.3 — Adding aleatoric uncertainty (“two heads, baby”)<a class="headerlink" href="#adding-aleatoric-uncertainty-two-heads-baby" title="Link to this heading">#</a></h2>
+<p>Epistemic uncertainty is reducible: collect more data and it shrinks. But some uncertainty is <strong>irreducible noise in the data itself</strong> — two identical-looking cars genuinely sell for different prices. That’s <strong>aleatoric uncertainty</strong>, and MC Dropout alone won’t capture it.</p>
+<p>So we give the network <strong>two heads</strong>: one predicting the mean <span class="math notranslate nohighlight">\(\mu\)</span>, one predicting the variance <span class="math notranslate nohighlight">\(\sigma^2\)</span> of the observation noise. Train it with a loss that rewards being both accurate <em>and</em> honestly calibrated about its noise. Now we can decompose total uncertainty into its two sources:</p>
+<div class="math notranslate nohighlight">
+\[\underbrace{\text{Var}(\hat{y})}_{\text{total}} \;=\; \underbrace{\text{Var}(\mu \text{ across MC passes})}_{\text{epistemic (model)}} \;+\; \underbrace{\overline{\sigma^2}}_{\text{aleatoric (data)}}\]</div>
+<p>The punchline, which genuinely changes the story: once you add the aleatoric head, you often discover that <strong>data noise dominates</strong>. That tells you something the point prediction never could — that the path to a better model is <em>better features and better data</em>, not a fancier architecture.</p>
+<div class="important admonition">
+<p class="admonition-title">See it counted — and why the variance head blows up</p>
+<p>The companion notebook <strong><code class="docutils literal notranslate"><span class="pre">BayesianNN_Params_Epistemic_vs_Aleatoric.ipynb</span></code></strong> opens this model up parameter by parameter, and it answers the question that bites everyone the first time: <em>why does the aleatoric head sometimes explode into NaNs?</em> You train the two heads with the <strong>Gaussian negative log-likelihood</strong>, <span class="math notranslate nohighlight">\(\tfrac12\big(\log\sigma^2 + (y-\mu)^2/\sigma^2\big)\)</span> — and that <span class="math notranslate nohighlight">\((y-\mu)^2/\sigma^2\)</span> term means a <strong>tiny predicted <span class="math notranslate nohighlight">\(\sigma^2\)</span> on a wrong point divides a real error by almost zero</strong>, sending the loss to infinity. The notebook plots the loss as a U-shape in <span class="math notranslate nohighlight">\(\sigma^2\)</span>, <strong>minimized exactly at <span class="math notranslate nohighlight">\(\sigma^2=(y-\mu)^2\)</span></strong> (so the model is gently forced to <em>learn</em> the noise level), and shows the standard cure: <strong>predict <span class="math notranslate nohighlight">\(\log\sigma^2\)</span>, not <span class="math notranslate nohighlight">\(\sigma^2\)</span></strong> — then <span class="math notranslate nohighlight">\(\sigma^2=e^{s}&gt;0\)</span> always and the loss is smooth. It also makes the parameter split concrete: <strong>epistemic uncertainty adds zero parameters</strong> (it’s the dropout you already have, measured across MC passes), while <strong>aleatoric uncertainty is a whole second head</strong>.</p>
+</div>
+<div class="note dropdown admonition">
+<p class="admonition-title">SHAP meets uncertainty</p>
+<p>You can run SHAP against <strong>three</strong> targets, not one: the mean (which features drive the prediction), the epistemic variance (which features make the model <em>unstable</em> because it lacks data there), and the aleatoric variance (which features are inherently <em>noisy</em>). A feature with high SHAP on aleatoric uncertainty is telling you the data for it is poor — no model can learn its way out of that.</p>
+</div>
+</section>
+<section id="project-1-probabilistic-car-prices">
+<h2>Project 1 — Probabilistic car prices<a class="headerlink" href="#project-1-probabilistic-car-prices" title="Link to this heading">#</a></h2>
+<p>Bring it together: scrape (or pull) the car data, fit a Bayesian(ish) network, and report not just predictions but <strong>intervals</strong>, <strong>coverage</strong>, and a <strong>SHAP</strong> analysis of your best successes and biggest misses. Can your network beat a simple decision tree on both the point estimate <em>and</em> the honesty of its uncertainty? That’s the bar.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./m1_bayesian"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Preface</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../m2_graphs/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Module 2 — Graph Neural Networks</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#webscraping-and-gcp-the-data-behind-the-project">1.0 — Webscraping and GCP (the data behind the project)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-dnns-with-shap">1.1 — Simple DNNs with SHAP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#epistemic-uncertainty-with-mc-dropout">1.2 — Epistemic uncertainty with MC Dropout</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-aleatoric-uncertainty-two-heads-baby">1.3 — Adding aleatoric uncertainty (“two heads, baby”)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-1-probabilistic-car-prices">Project 1 — Probabilistic car prices</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Dr. Dave Wanik · University of Connecticut (OPIM 5516)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p style="font-size:0.9em;opacity:0.85"><strong>⚠️ Work in progress.</strong> These are living draft materials — actively being written and revised. Expect rough edges, gaps, and changes; this is a teaching companion, not a final or official reference.</p>
+<p><em>OPIM 5516 — Advanced Deep Learning. Built from Dr. Wanik's lecture transcripts and course notebooks: Bayesian(ish) NNs, Graph Neural Networks, and Transformers.</em></p>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
