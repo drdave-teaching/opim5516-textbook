@@ -41,6 +41,11 @@ $$\underbrace{\text{Var}(\hat{y})}_{\text{total}} \;=\; \underbrace{\text{Var}(\
 
 The punchline, which genuinely changes the story: once you add the aleatoric head, you often discover that **data noise dominates**. That tells you something the point prediction never could — that the path to a better model is *better features and better data*, not a fancier architecture.
 
+```{admonition} See it counted — and why the variance head blows up
+:class: important
+The companion notebook **`BayesianNN_Params_Epistemic_vs_Aleatoric.ipynb`** opens this model up parameter by parameter, and it answers the question that bites everyone the first time: *why does the aleatoric head sometimes explode into NaNs?* You train the two heads with the **Gaussian negative log-likelihood**, $\tfrac12\big(\log\sigma^2 + (y-\mu)^2/\sigma^2\big)$ — and that $(y-\mu)^2/\sigma^2$ term means a **tiny predicted $\sigma^2$ on a wrong point divides a real error by almost zero**, sending the loss to infinity. The notebook plots the loss as a U-shape in $\sigma^2$, **minimized exactly at $\sigma^2=(y-\mu)^2$** (so the model is gently forced to *learn* the noise level), and shows the standard cure: **predict $\log\sigma^2$, not $\sigma^2$** — then $\sigma^2=e^{s}>0$ always and the loss is smooth. It also makes the parameter split concrete: **epistemic uncertainty adds zero parameters** (it's the dropout you already have, measured across MC passes), while **aleatoric uncertainty is a whole second head**.
+```
+
 ```{admonition} SHAP meets uncertainty
 :class: note dropdown
 You can run SHAP against **three** targets, not one: the mean (which features drive the prediction), the epistemic variance (which features make the model *unstable* because it lacks data there), and the aleatoric variance (which features are inherently *noisy*). A feature with high SHAP on aleatoric uncertainty is telling you the data for it is poor — no model can learn its way out of that.

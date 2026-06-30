@@ -11,6 +11,7 @@ The recurring theme here is **how data is transformed through the network** and 
 | **(recurrent baseline)** | `LSTM_Params_and_ShapeFlow` | four gates; $4H(i{+}H{+}1)$, exactly Keras's number |
 | **Time series** | `TimeSeries_Transformer_Params_and_ShapeFlow` | input embedding is a `Linear(F→d)`, not a token lookup; head forecasts the next value |
 | **Text / GPT** | `Transformer_Params_and_ShapeFlow` | token-ID lookup + a (free) causal mask; scales to confirm **GPT-2 small = 124M** |
+| **Images (baseline)** | `ConvNet_Params_and_ShapeFlow` | the pre-transformer workhorse; $(M^2C{+}1)F$ per conv layer |
 | **Images** | `ViT_Params_and_ShapeFlow` | an *image becomes patches → tokens* |
 | **Video** | `VideoTransformer_Params_and_ShapeFlow` | frames become *space-time tokens*; a pixel decoder draws the next frame |
 
